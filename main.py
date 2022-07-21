@@ -1,13 +1,14 @@
 """
-    @author: Leonardo Rossi Leão / Rodrigo de Oliveira Neto
+    @authors: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
     @create: november, 30, 2020
+    @modified: july, 2022
     @title: main
 """
 
 # Libraries
 import time
 from rawFileMonitor import RawFileMonitor
-from fourierRecMonitor import FourierRecMonitor
+from iocSeismometer import ioc 
 
 # Start the software
 file = open("start.txt", "r")
@@ -15,11 +16,10 @@ start = bool(file.read())
 file.close()
 
 if start == True:
-    # Instantiates a monitoring object
+    # Instantiate classes
     fileMonitor = RawFileMonitor()
-    fftMonitor = FourierRecMonitor()
-    fileMonitor.start() # Start the file monitoring
-    fftMonitor.start()
+    iocServer = ioc()
+    fileMonitor.start()
     while start == True:
         time.sleep(60)
         file = open("start.txt", "r")
@@ -27,4 +27,4 @@ if start == True:
         file.close()
 
 fileMonitor.stop()
-fftMonitor.stop()
+iocServer.stop()

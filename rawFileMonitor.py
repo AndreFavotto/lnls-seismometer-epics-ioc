@@ -1,18 +1,13 @@
 """
-    @author: Leonardo Rossi Leão / Rodrigo de Oliveira Neto
+    @author: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
     @create: november, 24, 2020
+    @modify: july, 2022
     @title: File monitor
 """
 
-# Libraries
-import os
-import time
-import threading
+import os, time, threading
 from datetime import datetime
 from datFileMonitor import DatFileMonitor
-
-# Restricoes para identificacao de um novo arquivo
-# 1. xxxxxxx_00000000: Arquivo em processamento
 
 class RawFileMonitor(threading.Thread):
     
@@ -20,7 +15,7 @@ class RawFileMonitor(threading.Thread):
         super(RawFileMonitor, self).__init__()
         self.kill = threading.Event()
         self.path_in = "/home/reftek/bin/archive"
-        self.path_cvt = self.path_in + "/pas2asc"
+        self.path_cvt = self.path_in + "/../pas2asc"
         self.datFileMonitor = DatFileMonitor()
         
     def getDateTime(self):
@@ -36,28 +31,28 @@ class RawFileMonitor(threading.Thread):
         today = datetime.now()
         year = today.year
         dayOfYear = (today - datetime(year, 1, 1)).days + 1
-        path = "%s/%d%d/B67D/1/" % (self.path_in, year, dayOfYear)
+        path = f'{self.path_in}/{year}{dayOfYear}/B67D/1/'
         arquivos = set(os.listdir(path))
         return (path, arquivos)
     
     def conversao(self, path, newFiles):
         for file in newFiles:
             path_in = path + file
-            if "_00000000" not in path_in:
+            if "_00000000" not in path_in: # xxxxxxx_00000000: File is still processing
                 os.system(self.path_cvt + " -Ln " + path_in)
                 os.remove(path_in)
-                self.recordAction("[%s] Action: raw file converted to dat" % self.getDateTime())
+                self.recordAction(f'[{self.getDateTime()}] Action: raw file converted to dat') 
                 self.datFileMonitor.run()
         
     def run(self):
-        self.recordAction("[%s] Action: start raw file monitor" % self.getDateTime())
+        self.recordAction(f'[{self.getDateTime()}] Action: started raw file monitor')
         path, content = self.searchFiles()
         while not self.kill.is_set():
             path, newContent = self.searchFiles()
             newFiles = newContent.difference(content)
             # Caso identificado um novo arquivo na pasta, realiza a conversao
             if newFiles:
-                self.recordAction("[%s] Action: new raw file founded" % self.getDateTime())
+                self.recordAction(f'[{self.getDateTime()}] Action: new raw file found')
                 self.conversao(path, newFiles)
             content = newContent
             time.sleep(0.5)
