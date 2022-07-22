@@ -5,7 +5,6 @@
     @title: Data Converter
 """
 
-# Libraries
 import os
 from datetime import datetime
 from processDatFile import ProcessDatFile as pdf    
@@ -39,5 +38,4 @@ class DatFileMonitor():
                 pdf.processFile(data, filename[-5])
                 os.remove(self.path_in + filename)
                 self.recordAction(f'[{self.getDateTime()}] Action: Channel {filename[-5]} | dat file treatment concluded')
-
         

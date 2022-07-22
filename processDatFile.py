@@ -1,5 +1,5 @@
 """
-    @author: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
+    @authors: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
     @create: november, 24, 2020
     @modify: july, 2022
     @title: Data processor and publisher
@@ -32,7 +32,6 @@ class ProcessDatFile:
     @staticmethod
     def processFile(data, canal):
         ioc_data = ioc() #instantiating IOC object
-        aSeismicData = []
         data = data.replace('$', '').split('\n')
         sampleRate = float(ProcessDatFile.getValue(data[3]))
         date = ProcessDatFile.processDate(data[4])
@@ -43,5 +42,3 @@ class ProcessDatFile:
             date = date + datetime.timedelta(milliseconds=(1000/sampleRate))
             ioc_data.write('leitura', value)
             ioc_data.write('canal', canal)
-            aSeismicData.append(value) #debug purposes only
-            print(value)

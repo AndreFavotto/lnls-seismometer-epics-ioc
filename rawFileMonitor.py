@@ -1,5 +1,5 @@
 """
-    @author: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
+    @authors: Leonardo Rossi Leão / Rodrigo de Oliveira Neto / André de Oliveira Águila Favoto
     @create: november, 24, 2020
     @modify: july, 2022
     @title: File monitor
@@ -14,17 +14,17 @@ class RawFileMonitor(threading.Thread):
     def __init__(self):
         super(RawFileMonitor, self).__init__()
         self.kill = threading.Event()
-        self.path_in = "/home/reftek/bin/archive"
-        self.path_cvt = self.path_in + "/../pas2asc"
+        self.path_in = '/home/reftek/bin/archive'
+        self.path_cvt = self.path_in + '/../pas2asc'
         self.datFileMonitor = DatFileMonitor()
         
     def getDateTime(self):
         now = datetime.now()
-        return now.strftime("%d/%m/%Y %H:%M:%S")
+        return now.strftime('%d/%m/%Y %H:%M:%S')
         
     def recordAction(self, text):
-        monitor = open("monitor.txt", "a")
-        monitor.write(text + "\n")
+        monitor = open('monitor.txt', 'a')
+        monitor.write(text + '\n')
         monitor.close()        
         
     def searchFiles(self):
@@ -38,9 +38,10 @@ class RawFileMonitor(threading.Thread):
     def conversao(self, path, newFiles):
         for file in newFiles:
             path_in = path + file
-            if "_00000000" not in path_in: # xxxxxxx_00000000: File is still processing
-                os.system(self.path_cvt + " -Ln " + path_in)
+            if '_00000000' not in path_in: # xxxxxxx_00000000: File is still processing
+                os.system(self.path_cvt + ' -Ln ' + path_in)
                 os.remove(path_in)
+                os.system('clear')
                 self.recordAction(f'[{self.getDateTime()}] Action: raw file converted to dat') 
                 self.datFileMonitor.run()
         
@@ -55,4 +56,4 @@ class RawFileMonitor(threading.Thread):
                 self.recordAction(f'[{self.getDateTime()}] Action: new raw file found')
                 self.conversao(path, newFiles)
             content = newContent
-            time.sleep(0.5)
+            time.sleep(0.1)
