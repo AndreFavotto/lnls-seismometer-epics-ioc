@@ -5,7 +5,7 @@
     @title: File monitor
 """
 
-import os, threading, time
+import os, threading
 from datetime import datetime
 from datFileMonitor import DatFileMonitor
 

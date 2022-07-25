@@ -5,8 +5,7 @@
     @title: Data Converter
 """
 
-import os
-from datetime import datetime
+import os, threading
 from processDatFile import ProcessDatFile as pdf    
 
 class DatFileMonitor():
@@ -14,16 +13,7 @@ class DatFileMonitor():
     def __init__(self):
         super(DatFileMonitor, self).__init__()
         self.path_in = '/home/reftek/ioc/lnls-seismometer-epics-ioc/'
-        
-    def getDateTime(self):
-        now = datetime.now()
-        return now.strftime('%d/%m/%Y %H:%M:%S')
-        
-    def recordAction(self, text):
-        monitor = open('monitor.txt', 'a')
-        monitor.write(text + '\n')
-        monitor.close()
-        
+                        
     def searchFiles(self):
         arquivos = set(os.listdir(self.path_in))
         return arquivos
@@ -36,6 +26,4 @@ class DatFileMonitor():
                 data = file.read()
                 file.close()
                 pdf.processFile(data, filename[-5])
-                os.remove(self.path_in + filename)
-                self.recordAction(f'[{self.getDateTime()}] Action: Channel {filename[-5]} | dat file treatment concluded')
-        
+                os.remove(self.path_in + filename)        
