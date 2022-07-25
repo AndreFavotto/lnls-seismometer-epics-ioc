@@ -5,7 +5,7 @@
     @title: Data Converter
 """
 
-import os, threading
+import os
 from processDatFile import ProcessDatFile as pdf    
 
 class DatFileMonitor():
