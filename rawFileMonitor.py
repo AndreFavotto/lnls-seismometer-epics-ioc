@@ -5,7 +5,7 @@
     @title: File monitor
 """
 
-import os, time, threading
+import os, threading, time
 from datetime import datetime
 from datFileMonitor import DatFileMonitor
 
@@ -17,15 +17,6 @@ class RawFileMonitor(threading.Thread):
         self.path_in = '/home/reftek/bin/archive'
         self.path_cvt = self.path_in + '/../pas2asc'
         self.datFileMonitor = DatFileMonitor()
-        
-    def getDateTime(self):
-        now = datetime.now()
-        return now.strftime('%d/%m/%Y %H:%M:%S')
-        
-    def recordAction(self, text):
-        monitor = open('monitor.txt', 'a')
-        monitor.write(text + '\n')
-        monitor.close()        
         
     def searchFiles(self):
         today = datetime.now()
@@ -42,18 +33,14 @@ class RawFileMonitor(threading.Thread):
                 os.system(self.path_cvt + ' -Ln ' + path_in)
                 os.remove(path_in)
                 os.system('clear')
-                self.recordAction(f'[{self.getDateTime()}] Action: raw file converted to dat') 
                 self.datFileMonitor.run()
         
     def run(self):
-        self.recordAction(f'[{self.getDateTime()}] Action: started raw file monitor')
         path, content = self.searchFiles()
         while not self.kill.is_set():
             path, newContent = self.searchFiles()
             newFiles = newContent.difference(content)
-            # Caso identificado um novo arquivo na pasta, realiza a conversao
+            # Converts data if new file found
             if newFiles:
-                self.recordAction(f'[{self.getDateTime()}] Action: new raw file found')
                 self.conversao(path, newFiles)
             content = newContent
-            time.sleep(0.1)
