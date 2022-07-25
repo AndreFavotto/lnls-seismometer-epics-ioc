@@ -4,7 +4,7 @@
     @modify: july, 2022
     @title: Data processor and publisher
 """
-import datetime
+import datetime, time
 from iocSeismometer import ioc
 
 class ProcessDatFile:
@@ -42,3 +42,4 @@ class ProcessDatFile:
             date = date + datetime.timedelta(milliseconds=(1000/sampleRate))
             ioc_data.write('leitura', value)
             ioc_data.write('canal', canal)
+            time.sleep(0.01) #Simulating DAS sampling frequency (100hz)
