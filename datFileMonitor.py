@@ -12,7 +12,7 @@ class DatFileMonitor():
     
     def __init__(self):
         super(DatFileMonitor, self).__init__()
-        self.path_in = '/home/reftek/ioc/lnls-seismometer-epics-ioc/'
+        self.path_in = './'
                         
     def searchFiles(self):
         arquivos = set(os.listdir(self.path_in))
