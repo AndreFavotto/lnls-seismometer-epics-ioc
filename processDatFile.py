@@ -4,7 +4,7 @@
     @modify: july, 2022
     @title: Data processor and publisher
 """
-import datetime, time
+import time
 from iocSeismometer import ioc
 
 class ProcessDatFile:
@@ -13,14 +13,6 @@ class ProcessDatFile:
     def getValue(data):
         option, value = tuple(data.replace(' ','').split('='))
         return value
-    
-    @staticmethod
-    def processDate(fileDate):
-        fileDate = ProcessDatFile.getValue(fileDate)
-        year, dayOfYear, hour, minutes, seconds, ms = tuple(fileDate.replace('.', ':').split(':'))
-        dt = datetime.date(int(year), 1, 1) + datetime.timedelta(int(dayOfYear) - 1)
-        ms = int(ms)/10**6
-        return datetime.datetime(dt.year, dt.month, dt.day, int(hour), int(minutes), int(seconds), int(ms))
     
     @staticmethod
     def convertCounts(counts, bitWeight):
@@ -33,13 +25,10 @@ class ProcessDatFile:
     def processFile(data, canal):
         ioc_data = ioc() #instantiating IOC object
         data = data.replace('$', '').split('\n')
-        sampleRate = float(ProcessDatFile.getValue(data[3]))
-        date = ProcessDatFile.processDate(data[4])
         bitWeight = float(ProcessDatFile.getValue(data[6]))
         # Seismic Data
         for counts in data[10:(len(data)-1)]:
             value = ProcessDatFile.convertCounts(float(counts), bitWeight)
-            date = date + datetime.timedelta(milliseconds=(1000/sampleRate))
             ioc_data.write('leitura', value)
             ioc_data.write('canal', canal)
             time.sleep(0.01) #Simulating DAS sampling frequency (100hz)
