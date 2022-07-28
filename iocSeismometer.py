@@ -6,9 +6,9 @@
 from pcaspy import Driver, SimpleServer
 from pcaspy.tools import ServerThread
 
-prefix = 'LNLS:SISM:'
+prefix = 'Met:Seism:'
 pvdb   = {
-    'leitura'  : {
+    'Speed-Mon': {
         'unit' : 'm/s'
     },
     'status': {

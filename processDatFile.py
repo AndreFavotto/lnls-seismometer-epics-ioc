@@ -29,6 +29,6 @@ class ProcessDatFile:
         # Seismic Data
         for counts in data[10:(len(data)-1)]:
             value = ProcessDatFile.convertCounts(float(counts), bitWeight)
-            ioc_data.write('leitura', value)
+            ioc_data.write('Speed-Mon', value)
             ioc_data.write('canal', canal)
             time.sleep(0.01) #Simulating DAS sampling frequency (100hz)

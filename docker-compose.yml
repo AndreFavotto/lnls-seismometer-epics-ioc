@@ -8,3 +8,4 @@ services:
       context: "."
     volumes:
       - /home/reftek/bin:/home/reftek/bin
+    network_mode: "host"
