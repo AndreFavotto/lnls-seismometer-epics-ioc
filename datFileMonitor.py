@@ -19,11 +19,15 @@ class DatFileMonitor():
         return arquivos
                 
     def run(self):
-        content = self.searchFiles()
-        for filename in content:
-            if '.atr' in filename:
-                file = open(self.path_in + filename, 'r')
-                data = file.read()
-                file.close()
-                pdf.processFile(data, filename[-5])
-                os.remove(self.path_in + filename)        
+        try:
+            content = self.searchFiles()
+            for filename in content:
+                if '.atr' in filename:
+                    file = open(self.path_in + filename, 'r')
+                    data = file.read()
+                    file.close()
+                    pdf.processFile(data, filename[-5])
+                    os.remove(self.path_in + filename)        
+        except Exception as e:
+            print(f'Error in dat file monitoring: {e.args[0]}')
+            os._exit(1)

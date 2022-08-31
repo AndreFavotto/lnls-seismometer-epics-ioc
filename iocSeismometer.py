@@ -3,16 +3,14 @@
     @create: july, 2022
     @title: Seismometer's IOC
 """
+import os
 from pcaspy import Driver, SimpleServer
 from pcaspy.tools import ServerThread
 
-prefix = 'Met:Seism:'
+prefix = 'RR-09S:SS-Seism-Ax13:'
 pvdb   = {
-    'Speed-Mon': {
+    'S-Mon': {
         'unit' : 'm/s'
-    },
-    'status': {
-        'type' : 'char'
     },
     'canal': {
         'type' : 'string'
@@ -34,7 +32,11 @@ class ioc(Driver):
         self.updatePVs()
         return value
 
-server = SimpleServer()
-server.createPV(prefix, pvdb)
-server_thread = ServerThread(server)
-server_thread.start()
+try:
+    server = SimpleServer()
+    server.createPV(prefix, pvdb)
+    server_thread = ServerThread(server)
+    server_thread.start()
+except Exception as e:
+    print(f'Error starting epics server: {e.args[0]}')
+    os._exit(1)

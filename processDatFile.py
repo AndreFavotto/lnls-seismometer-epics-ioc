@@ -4,7 +4,7 @@
     @modify: july, 2022
     @title: Data processor and publisher
 """
-import time
+import time, os
 from iocSeismometer import ioc
 
 class ProcessDatFile:
@@ -23,12 +23,16 @@ class ProcessDatFile:
     
     @staticmethod
     def processFile(data, canal):
-        ioc_data = ioc() #instantiating IOC object
-        data = data.replace('$', '').split('\n')
-        bitWeight = float(ProcessDatFile.getValue(data[6]))
-        # Seismic Data
-        for counts in data[10:(len(data)-1)]:
-            value = ProcessDatFile.convertCounts(float(counts), bitWeight)
-            ioc_data.write('Speed-Mon', value)
-            ioc_data.write('canal', canal)
-            time.sleep(0.01) #Simulating DAS sampling frequency (100hz)
+        try:
+            ioc_data = ioc() #instantiating IOC object
+            data = data.replace('$', '').split('\n')
+            bitWeight = float(ProcessDatFile.getValue(data[6]))
+            # Seismic Data
+            for counts in data[10:(len(data)-1)]:
+                value = ProcessDatFile.convertCounts(float(counts), bitWeight)
+                ioc_data.write('S-Mon', value)
+                ioc_data.write('canal', canal)
+                time.sleep(0.008) #Compensating DAS sampling frequency (100hz)
+        except Exception as e:
+            print(f'Error in dat file processing: {e.args[0]}')
+            os._exit(1)
