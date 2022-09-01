@@ -2,16 +2,18 @@
     This script monitors the given path in [-p] for new raw data files, then convert it to .atr
 """
 
-import os, traceback as _traceback, sys,threading, shutil, datetime
+import os, sys,threading, shutil, datetime, traceback as _traceback
 from atrFileMonitor import atrFileMonitor
-from globalVars import globalVars
+from globalScripts import globalScripts
 
 class rawFileMonitor(threading.Thread):
     
     def __init__(self):
         super(rawFileMonitor, self).__init__()
         self.kill = threading.Event()
-        self.basePath = globalVars().getArgs().p
+        self.basePath = globalScripts().getArgs().p
+        self.unitId = globalScripts().getArgs().i
+        self.dataStream = globalScripts().getArgs().s
         self.pathIn = f'{self.basePath}/archive'
         self.pathCvt = f'{self.basePath}/pas2asc'
         self.atrFileMonitor = atrFileMonitor()
@@ -20,7 +22,7 @@ class rawFileMonitor(threading.Thread):
         today = datetime.datetime.now()
         year = today.year
         dayOfYear = (today - datetime.datetime(year, 1, 1)).days + 1
-        filesPath = f'{self.pathIn}/{year}{dayOfYear}/B67D/1/'
+        filesPath = f'{self.pathIn}/{year}{dayOfYear}/{self.unitId}/{self.dataStream}/'
         arquivos = set(os.listdir(filesPath))
         return (filesPath, arquivos)
     
@@ -53,6 +55,7 @@ class rawFileMonitor(threading.Thread):
                 if newFiles:
                     self.convert(filesPath,newFiles)
                 content = newContent
-        except Exception:
+        except Exception as e:
             _traceback.print_exc(file=sys.stdout)
-            sys.exit("Exception raised in rawFileMonitoring.py")
+            logmsg = f'Exception raised in rawFileMonitoring.py {e.args[0]}'
+            sys.exit(logmsg)

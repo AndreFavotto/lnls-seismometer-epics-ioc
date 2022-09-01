@@ -1,14 +1,12 @@
 """
-    @author: André de Oliveira Águila Favoto
-    @create: july, 2022
-    @title: Seismometer's IOC
+    This script provides the EPICS ioc server
 """
 import sys, traceback as _traceback
 from pcaspy import Driver, SimpleServer
 from pcaspy.tools import ServerThread
-from globalVars import globalVars
+from globalScripts import globalScripts
 
-prefix = f'{globalVars.getArgs().P}'
+prefix = f'{globalScripts.getArgs().P}'
 pvdb   = {
     'S-Mon': {
         'unit' : 'm/s'
@@ -39,6 +37,8 @@ try:
     server_thread = ServerThread(server)
     server_thread.start()
     driver = ioc()
-except Exception:
+
+except Exception as e:
     _traceback.print_exc(file=sys.stdout)
-    sys.exit("Exception raised in iocSeismometer.py")
+    logmsg = f'Exception raised in iocSeismometer.py: {e.args[0]}'
+    sys.exit(logmsg)

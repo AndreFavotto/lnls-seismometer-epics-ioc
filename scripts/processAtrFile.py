@@ -1,8 +1,7 @@
 """
-    This file processes .atr data sent by atrFileMonitor.py and write processed data into PV.
+    This script processes .atr data sent by atrFileMonitor.py and write processed data into PV.
 """
-import time, sys, traceback as _traceback
-import iocSeismometer
+import iocSeismometer, time, sys, traceback as _traceback
 
 class processAtrFile:
 
@@ -29,6 +28,7 @@ class processAtrFile:
                 iocSeismometer.driver.write('S-Mon', value)
                 iocSeismometer.driver.write('canal', canal)
                 time.sleep(0.008) #Compensating DAS sampling frequency (100hz)
-        except Exception:
+        except Exception as e:
             _traceback.print_exc(file=sys.stdout)
-            sys.exit("Exception raised in processAtrFile.py")
+            logmsg = f'Exception raised in processAtrFile.py: {e.args[0]}'
+            sys.exit(logmsg)
