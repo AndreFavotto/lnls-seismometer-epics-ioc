@@ -9,4 +9,6 @@ Seism: Seismometer system
 Ax13: 13th Sirius' building axis
 S-Mon: Speed Monitoring
 
-This application deppends on DAS 130-01 file writing system, so the server's path to the files must be mounted on the container.
+This application relies on DAS 130-01 file writing system, so the server's path to the files must be mounted on the container.
+
+@authors: André de Oliveira Águila Favoto/ Leonardo Rossi Leão / Rodrigo de Oliveira Neto 
