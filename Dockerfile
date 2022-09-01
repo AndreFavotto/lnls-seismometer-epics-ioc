@@ -39,11 +39,16 @@ RUN pip3 install --upgrade setuptools;\
 
 ARG DAS_PATH
 ARG PV_PREFIX
+ARG UNIT_ID
+ARG DATA_STREAM
+
 ENV DAS_PATH ${DAS_PATH}
 ENV PV_PREFIX ${PV_PREFIX}
+ENV UNIT_ID ${UNIT_ID}
+ENV DATA_STREAM ${DATA_STREAM}
 
 WORKDIR /opt
 
 COPY . .
 
-CMD python3 ./scripts/main.py -p ${DAS_PATH} -P ${PV_PREFIX}
+CMD python3 ./scripts/main.py -p ${DAS_PATH} -P ${PV_PREFIX} -i ${UNIT_ID} -s ${DATA_STREAM} 
