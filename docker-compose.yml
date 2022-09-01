@@ -1,12 +1,17 @@
-version: "3.6"
+version: "3.9"
 services:
   ioc-seismometer:
+    container_name: ioc-seismometer
+    image: public.ecr.aws/debian/debian:10-slim
     stdin_open: true
     tty: true
-    image: public.ecr.aws/debian/debian:10-slim
+    network_mode: "host"
+    env_file: 
+      - ./.env
+    volumes:
+      - ${DAS_PATH}:${DAS_PATH}
     build: 
       context: "."
-    volumes:
-      - /home/reftek/bin:/home/reftek/bin
-    network_mode: "host"
-    restart: always
+      args:
+        DAS_PATH: ${DAS_PATH}
+        PV_PREFIX: ${PV_PREFIX}
