@@ -3,7 +3,7 @@
 The app runs by monitoring raw files written by the seismometer's recorder (DAS 130-01), converting it to a known format and then writing it to the EPICS PV RR-09S:SS-Seismic-Ax13:S-Mon, where:
 
 RR: Rack Room
-09S: 9th Sirius' sector (essa setorização é baseada na setorização do anel)
+09S: 9th Sirius' sector
 SS: Stability System
 Seism: Seismometer system
 Ax13: 13th Sirius' building axis
