@@ -40,7 +40,7 @@ class rawFileMonitor(threading.Thread):
         for file in newFiles:
             pathIn = filesPath + file
             if '_00000000' not in pathIn: # xxxxxxx_00000000: File is still processing
-                os.system(self.pathCvt + ' -Ln ' + pathIn)
+                os.system(self.pathCvt + ' -ln ' + pathIn + ' 1> /dev/null 2> /dev/null')
                 os.remove(pathIn)
                 self.atrFileMonitor.run()
         
