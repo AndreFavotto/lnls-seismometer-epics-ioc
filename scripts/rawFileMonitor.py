@@ -55,7 +55,6 @@ class rawFileMonitor(threading.Thread):
                 if newFiles:
                     self.convert(filesPath,newFiles)
                 content = newContent
-        except Exception as e:
+        except Exception:
             _traceback.print_exc(file=sys.stdout)
-            logmsg = f'Exception raised in rawFileMonitoring.py {e.args[0]}'
-            sys.exit(logmsg)
+            os._exit()

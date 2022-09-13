@@ -1,7 +1,7 @@
 """
     This script provides the EPICS ioc server
 """
-import sys, traceback as _traceback
+import sys, os, traceback as _traceback
 from pcaspy import Driver, SimpleServer
 from pcaspy.tools import ServerThread
 from globalScripts import globalScripts
@@ -38,7 +38,6 @@ try:
     server_thread.start()
     driver = ioc()
 
-except Exception as e:
+except Exception:
     _traceback.print_exc(file=sys.stdout)
-    logmsg = f'Exception raised in iocSeismometer.py: {e.args[0]}'
-    sys.exit(logmsg)
+    os._exit()

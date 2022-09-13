@@ -25,7 +25,6 @@ class atrFileMonitor():
                     file.close()
                     pdf.processFile(data, filename[-5])
                     os.remove(self.path_in + filename)        
-        except Exception as e:
+        except Exception:
             _traceback.print_exc(file=sys.stdout)
-            logmsg = f'Exception raised in rawFileMonitoring.py {e.args[0]}'
-            sys.exit(logmsg)
+            os._exit()
