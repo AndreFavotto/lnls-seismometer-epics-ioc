@@ -18,7 +18,7 @@ Docker version 20.10.17, build 100c701
 Docker Compose version v2.6.0
 ```
 
-Once done, one can follow these two steps:
+Once done, one can do as follows:
 
 1. Define `.env` attributes:
 ```
