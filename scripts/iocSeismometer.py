@@ -40,4 +40,4 @@ try:
 
 except Exception:
     _traceback.print_exc(file=sys.stdout)
-    os._exit()
+    os._exit(0)

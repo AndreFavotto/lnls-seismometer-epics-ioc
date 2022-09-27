@@ -30,4 +30,4 @@ class processAtrFile:
                 time.sleep(0.008) #Compensating DAS sampling frequency (100hz)
         except Exception:
             _traceback.print_exc(file=sys.stdout)
-            os._exit()
+            os._exit(0)
