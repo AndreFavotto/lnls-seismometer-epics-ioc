@@ -9,9 +9,16 @@ Seism: Seismometer system
 Ax13: 13th Sirius' building axis
 S-Mon: Speed Monitoring
 
-## Excecuting IOC:
+## Executing containerized IOC:
 
-This application runs inside a docker container, so beside DAS's system, docker engine must be installed.
+In order to run this application inside a docker container, docker engine and docker compose must be installed. The versions used in this application were:
+
+```
+Docker version 20.10.17, build 100c701
+Docker Compose version v2.6.0
+```
+
+Once done, one can follow these two steps:
 
 1. Define `.env` attributes:
 ```
@@ -25,5 +32,29 @@ DATA_STREAM= #Unit's Data Stream providing files (e.g.: 1)
 `sudo bash ./install.sh`
 
 and the IOC should be UP and running.
+
+3. If using docker as container manager, one can add restart policies to `docker-compose.yml` file, then run from project's main directory:
+
+`docker compose up`
+
+## Executing IOC locally:
+
+To start IOC locally (outside container), one must install manually the pcaspy library:
+
+`pip3 install pcaspy`
+
+For this application, pcaspy 0.7.3. was used.
+
+After this, one can run the following line from project's main directory:
+
+`python3 ./scripts/main.py -p [DAS_PATH] -P [PV_PREFIX] -i [UNIT_ID] -s [DATA_STREAM]`
+
+Where:
+```
+-p P        Path to DAS-130 files (e.g.: /home/reftek/bin)
+-P P        Seismometer's PV prefix (e.g.: RR-09S:SS-Seism-Ax13:)
+-i I        Unit ID (e.g.: B67D)
+-s S        Unit's data stream to hear data (e.g.: 1)
+```
 
 @authors: André de Oliveira Águila Favoto/ Leonardo Rossi Leão / Rodrigo de Oliveira Neto 
